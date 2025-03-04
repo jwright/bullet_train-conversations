@@ -44,13 +44,13 @@ module Conversations::Base
   end
 
   def mark_read_for_membership(membership)
-    if subscriptions.find_by(membership: membership)&.mark_read
+    if subscriptions.find_by(membership: membership)&.lock!&.mark_read
       save # for broadcast, but only if the subscription read receipt was actually updated.
     end
   end
 
   def mark_read_for_participant(participant)
-    if subscriptions.find_by(participant: participant)&.mark_read
+    if subscriptions.find_by(participant: participant)&.lock!&.mark_read
       save # for broadcast, but only if the subscription read receipt was actually updated.
     end
   end
